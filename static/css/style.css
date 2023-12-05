@@ -1,0 +1,175 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: #131313;
+    color: white;
+}
+
+.navbar {
+    background-color: #242525;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar a {
+    color: #830709;
+    text-decoration: none;
+    padding: 5px 15px;
+}
+
+.navbar a:hover {
+    background-color: #ff2d20;
+    color: white;
+}
+
+.hero video {
+    width: 100%;
+    height: calc(90vh - 50px);
+    object-fit: cover;
+    position: absolute;
+    top: 100px;
+    left: 0;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    text-align: left;
+    color: #fff;
+    padding-left: 5%;
+    max-width: 600px;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+}
+
+.hero {
+    height: 50vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-shadow: 2px 2px 4px #000;
+    margin-bottom: 335px;
+}
+
+.hero h1 {
+    color: #fff;
+    font-size: 3em;
+    margin: 0;
+}
+
+.hero p {
+    color: #ddd;
+    margin: 10px 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.upload-area {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.upload-area h2 {
+    margin: 0;
+    padding: 15px 0;
+    font-size: 1.5em;
+    color: #85050c;
+}
+
+.upload-area input[type="file"] {
+    width: 90%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background: #262626;
+    border: 1px solid #333;
+    color: white;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 20px;
+}
+
+.btn-fill, .btn-prediction {
+    padding: 10px 250px; /* Aumento del padding horizontal para hacer los botones más largos */
+    border: none;
+    border-radius: 5px;
+    background: #830709;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.btn-fill:hover, .btn-prediction:hover {
+    background: #be0477; /* Cambio a color fucsia cuando se coloca el cursor sobre el botón */
+}
+
+.footer {
+    background-color: #830709;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    height: 50px;
+}
+
+#plotly-chart, #prediction-result {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo {
+    height: 60px;
+}
+
+.social-icon {
+    width: 20px; /* O el tamaño que prefieras */
+    margin: 0 10px; /* Ajusta el espaciado alrededor de las imágenes según sea necesario */
+    vertical-align: middle; /* Alinea verticalmente si es necesario */
+}
