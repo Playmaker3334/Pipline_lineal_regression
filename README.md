@@ -1,7 +1,7 @@
 # Pipline_lineal_regression
 This is a project in which we will perform a multiple linear regression which will be extracted and mounted in a docker and will be displayed on a web page.
 
-# Points to consider
+![WARNING]
 To ensure proper utilization of the code, the following prerequisites must be met:
 
     - Account creation at data.world is required to access full code functionality.
