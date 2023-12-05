@@ -1,8 +1,7 @@
 from flask import Flask, request, render_template, session, redirect, url_for, jsonify
 from data_cleaning import DataCleaning, LinearRegressionModel, PredictionModel, RegressionPlot
 import os
-import pickle  # Para serializar y deserializar el modelo
-import json
+import pickle
 import traceback
 
 app = Flask(__name__)
@@ -52,8 +51,19 @@ def train():
         plotter = RegressionPlot(modelo.X_test, modelo.y_test, modelo.model, mse, r2, rmse)
         plot_div = plotter.plot_regression()
 
-        # Almacenar el modelo entrenado en la sesión
-        session['modelo_entrenado'] = pickle.dumps(modelo.model)
+        # Guardar el modelo entrenado en el sistema de archivos
+        model_path = os.path.join(upload_folder, 'modelo_entrenado.pkl')
+        with open(model_path, 'wb') as file:
+            pickle.dump(modelo.model, file)
+
+        # Guardar los datos limpios en el sistema de archivos
+        data_path = os.path.join(upload_folder, 'datos_limpios.pkl')
+        with open(data_path, 'wb') as file:
+            pickle.dump((data_cleaner.X, data_cleaner.y), file)
+
+        # Almacenar las rutas en la sesión
+        session['model_path'] = model_path
+        session['data_path'] = data_path
 
         return render_template('index.html', plot_div=plot_div)
     except Exception as e:
@@ -61,15 +71,19 @@ def train():
 
 @app.route('/predict', methods=['GET'])
 def predict():
-    if 'file1' not in session or 'file2' not in session or 'modelo_entrenado' not in session:
+    if 'model_path' not in session or 'data_path' not in session:
         return redirect(url_for('index'))
-    
-    try:
-        modelo_entrenado = pickle.loads(session['modelo_entrenado'])
-        data_cleaner = DataCleaning(session['file1'], session['file2'])
-        data_cleaner.run_all()
 
-        prediction_model = PredictionModel(modelo_entrenado, data_cleaner.X)
+    try:
+        # Cargar el modelo entrenado desde el sistema de archivos
+        with open(session['model_path'], 'rb') as file:
+            modelo_entrenado = pickle.load(file)
+
+        # Cargar los datos limpios desde el sistema de archivos
+        with open(session['data_path'], 'rb') as file:
+            X, y = pickle.load(file)
+
+        prediction_model = PredictionModel(modelo_entrenado, X)
         prediction_model.generate_random_data()
         prediction_model.make_predictions()
         graph_json = prediction_model.plot_predictions_line()
