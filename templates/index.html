@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CallMeMaker Dashboard</title>
+    <link rel="icon" href="{{ url_for('static', filename='kafkaico.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+    <div class="logo-overlay">
+        <img src="{{ url_for('static', filename='uwu.png') }}" alt="Logo" class="logo">
+    </div>
+
+    <section class="hero">
+        <video autoplay loop muted playsinline>
+            <source src="{{ url_for('static', filename='The_GOAT.mp4') }}" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
+        <div class="hero-content">
+            <h1>Final project</h1>
+            <p>Project of linear multiple regression.</p>
+        </div>
+    </section>
+    
+    <div class="navbar">
+        <!-- Navigation content here -->
+    </div>
+
+    <div class="container">
+        <div class="upload-area">
+            <h2>Upload CSV and Analyze Data</h2>
+            <form id="upload-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+                <input type="file" id="fileInput1" name="uploadedFile1" accept=".csv">
+                <input type="file" id="fileInput2" name="uploadedFile2" accept=".csv">
+                <div class="button-group">
+                    <button type="button" class="btn-fill" onclick="submitForm()">Upload</button>
+                    <button type="button" class="btn-fill" onclick="window.location.href='/train'">Training</button>
+                </div>
+            </form>
+        </div>
+
+        {% if plot_div %}
+            <div id="plotly-chart">{{ plot_div|safe }}</div>
+            <div class="button-group">
+                <button type="button" class="btn-fill" onclick="loadPrediction()">Prediction</button>
+            </div>
+        {% endif %}
+
+        <!-- Div para mostrar los resultados de la predicción -->
+        <div id="prediction-result"></div>
+    </div>
+    
+    <div class="footer">
+        <a href="https://discord.com/channels/@me" target="_blank">
+            <img src="{{ url_for('static', filename='discord.png') }}" alt="Discord" class="social-icon">
+        </a>
+        <a href="https://github.com/Playmaker3334" target="_blank">
+            <img src="{{ url_for('static', filename='GITHUB.png') }}" alt="GitHub" class="social-icon">
+        </a>
+        <a href="https://www.linkedin.com/in/krishna-sandoval-8b3206298/" target="_blank">
+            <img src="{{ url_for('static', filename='linkedin.png') }}" alt="LinkedIn" class="social-icon">
+        </a>
+    </div>
+    
+
+    <script>
+        function submitForm() {
+            var fileInput1 = document.getElementById('fileInput1');
+            var fileInput2 = document.getElementById('fileInput2');
+            if (!fileInput1.files.length || !fileInput2.files.length) {
+                alert('Por favor, selecciona ambos archivos antes de subir.');
+                return;
+            }
+            var form = document.getElementById('upload-form');
+            form.submit();
+        }
+
+        function loadPrediction() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/predict', true);
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    var response = JSON.parse(this.responseText);
+                    if (typeof Plotly !== 'undefined') {
+                        var predictionResult = document.getElementById('prediction-result');
+                        predictionResult.innerHTML = '';
+                        Plotly.newPlot('prediction-result', response.data, response.layout);
+                    } else {
+                        console.error('Plotly no está cargado');
+                    }
+                } else {
+                    console.error('Error al cargar la predicción: ' + this.status);
+                }
+            };
+            xhr.onerror = function() {
+                console.error('Error en la solicitud a /predict');
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
